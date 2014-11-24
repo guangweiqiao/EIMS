@@ -2,7 +2,7 @@ package com.symantec.bean;
 
 public class Employee {
 
-	private Long id;
+	private String id;
 	
 	private String firstName;
 	
@@ -12,11 +12,24 @@ public class Employee {
 	
 	private String email;
 
-	public Long getId() {
+	public Employee(){}
+	
+	public Employee(String firstName, String lastName){
+		this(firstName, lastName, null,null);
+	}
+	
+	public Employee(String firstName, String lastName, String department, String email){
+		this.firstName = firstName;
+		this.lastName  = lastName;
+		this.department= department;
+		this.email     = email;
+	}
+	
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -56,7 +69,7 @@ public class Employee {
 		StringBuffer sbuf = new StringBuffer("Employee Info:");
 		sbuf.append("id: " + this.id).append(" first name:" + this.firstName)
 			.append(" lastName:"+ this.lastName).append(" department:" + this.department)
-			.append(" email"+ this.email);
+			.append(" email: "+ this.email);
 		
 		return sbuf.toString();
 	}
