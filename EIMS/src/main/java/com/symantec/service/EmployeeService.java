@@ -39,4 +39,9 @@ public class EmployeeService {
 		
 		return null;
 	}
+
+	public void deleteEmployee(String id) {
+		if(Util.isEmptyOrNull(id)) return;
+		repo.delete(id);
+	}
 }

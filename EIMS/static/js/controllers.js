@@ -8,19 +8,44 @@ employeeCtrls.controller('HelloCtrl', ['$scope',
     }
 ]);
 
-employeeCtrls.controller('BookListCtrl', ['$scope',
-    function($scope) {
-        $scope.books =[
-        	{title:"Spring in action",author:"123"}]
-    }
-]);
 
-employeeCtrls.controller('EmployeeListCtrl', ['$scope','$http', 
-    function ($scope, $http) {
-    	$http.get('/employees').success(function(data) {
+employeeCtrls.controller('EmployeeCtrls', ['$scope', '$http','$window', '$location', function ($scope, $http, $window, $location) {
+
+    $scope.listEmployees = function(){
+        $http.get('/employees').success(function(data) {
             $scope.employees = data;
         });
     }
-]);
+
+    $scope.addEmployee = function(){
+        var fName = $scope.firstName;
+        var lName = $scope.lastName;
+        var dpt = $scope.department;
+        var em = $scope.email;
+
+        //alert(fName + "  " + lName + "  "+ dpt+ "  " + em);
+
+        $http.post("/createEmployee", {
+            firstName : fName,
+            lastName  : lName,
+            department: dpt,
+            email     : em
+        }).success(function(){
+            //$window.location.href = "/employees"; //old usage
+            $location.path("/list");
+            //$scope.listEmployees();
+        });
+    };
+
+    $scope.deleteEmployee = function(id){
+        $http.delete('/employees/' + id).success(function(){
+            
+            $scope.listEmployees();
+            alert("delete employee:" + id);
+        });
+    };
+
+    $scope.listEmployees();
+}]);
 
 

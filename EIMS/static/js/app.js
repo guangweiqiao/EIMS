@@ -9,8 +9,11 @@ employeeApp.config(function($routeProvider) {
         controller: 'HelloCtrl'
     }).when('/list',{
     	templateUrl:'html/employees.html',
-    	controller:'EmployeeListCtrl'
+    	controller:'EmployeeCtrls'
+    }).when('/add', {
+        templateUrl: 'html/employee-add.html',
+        controller: 'EmployeeCtrls'
     }).otherwise({
-        redirectTo: '/hello'
+        redirectTo: '/list'
     })
 });
