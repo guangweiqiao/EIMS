@@ -21,18 +21,18 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	@RequestMapping(value = "/employees", method = RequestMethod.GET)
+	@RequestMapping(value = "/employees/list", method = RequestMethod.GET)
 	public List<Employee> listEmployees(){
 		return employeeService.findAll();
 	}
 	
-	@RequestMapping(value="/createEmployee", method = RequestMethod.POST)
+	@RequestMapping(value="/employee/add", method = RequestMethod.POST)
 	public Employee createEmployee(@RequestBody Employee employee){
 		return employeeService.add(employee);
 	}
 	
-	@RequestMapping(value = "/employees/{firstName}", method = RequestMethod.GET)
-	public Employee getEmployee(@PathVariable String firstName, HttpServletRequest request){
+	@RequestMapping(value = "/employee/{firstName}", method = RequestMethod.GET)
+	public Employee getEmployeeByFirstName(@PathVariable String firstName, HttpServletRequest request){
 		Employee employee = employeeService.getEmployeeByFirstName(firstName);
 		
 		if( null == employee ){
@@ -42,7 +42,23 @@ public class EmployeeController {
 		return employee;
 	}
 	
-	@RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/employee/get/{id}", method = RequestMethod.GET)
+	public Employee getEmployeeById(@PathVariable String id){
+		Employee employee = employeeService.getEmployeeById(id);
+		
+		if( null == employee ){
+			throw new EmployeeNotFoundException("No employee with id: "+ id);
+		}
+		
+		return employee;
+	}
+	
+	@RequestMapping(value="/updateEmployee", method = RequestMethod.PUT)
+	public Employee updateEmployee(@RequestBody Employee employee){
+		return employeeService.update(employee);
+	}
+	
+	@RequestMapping(value = "/employee/delete/{id}", method = RequestMethod.DELETE)
 	public void deleteEmployee(@PathVariable String id){
 		employeeService.deleteEmployee(id);
 	}

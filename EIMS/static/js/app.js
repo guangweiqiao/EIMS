@@ -1,6 +1,5 @@
 var employeeApp = angular.module('employeeApp', [
-    'ngRoute', 'ngAnimate', 'employeeCtrls', 'employeeFilters',
-    'employeeServices', 'employeeDirectives'
+    'ngRoute', 'ngAnimate', 'employeeCtrls','employeeFilters', 'employeeDirectives'
 ]);
 
 employeeApp.config(function($routeProvider) {

@@ -31,6 +31,23 @@ public class EmployeeService {
 		return repo.save(employee);
 	}
 
+	public Employee update(Employee employee){
+		if(null == employee){
+			return null;
+		}
+		
+		Employee em = repo.findOne(employee.getId());
+		if(null == em){
+			repo.save(employee);
+		}
+		
+		if(em.equals(employee)){
+			return employee;
+		}
+		
+		return repo.save(employee);
+	}
+	
 	public Employee getEmployeeByFirstName(String firstName) {
 
 		if(!Util.isEmptyOrNull(firstName)){
@@ -43,5 +60,9 @@ public class EmployeeService {
 	public void deleteEmployee(String id) {
 		if(Util.isEmptyOrNull(id)) return;
 		repo.delete(id);
+	}
+
+	public Employee getEmployeeById(String id) {
+		return repo.findOne(id);
 	}
 }

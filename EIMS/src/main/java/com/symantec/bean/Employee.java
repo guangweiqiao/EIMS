@@ -65,6 +65,7 @@ public class Employee {
 		this.email = email;
 	}
 	
+	@Override
 	public String toString(){
 		StringBuffer sbuf = new StringBuffer("Employee Info:");
 		sbuf.append("id: " + this.id).append(" first name:" + this.firstName)
@@ -74,4 +75,15 @@ public class Employee {
 		return sbuf.toString();
 	}
 	
+	@Override
+	public boolean equals(Object o){
+		if(null == o || !(o instanceof Employee)){
+			return false;
+		}
+		
+		Employee employee = (Employee)o;
+		return (this.id.equals(employee.getId()) && this.firstName.equals(employee.getFirstName()) 
+				&& this.lastName.equals(employee.getLastName()) && this.email.equals(employee.getEmail())
+				&& this.department.equals(employee.getDepartment())) ? true : false;
+	}
 }
