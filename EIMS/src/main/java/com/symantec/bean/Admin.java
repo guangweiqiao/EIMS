@@ -1,17 +1,24 @@
 package com.symantec.bean;
 
 public class Admin {
-	private Long id;
+	private String id;
 	
 	private String name;
 	
 	private String password;
 
-	public Long getId() {
+	public Admin(){}
+	
+	public Admin(String name, String password){
+		this.name = name;
+		this.password = password;
+	}
+	
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

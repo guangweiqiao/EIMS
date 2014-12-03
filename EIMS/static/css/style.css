@@ -3,4 +3,8 @@ div#main, div#main table, div#main form, div#main a{
 	margin: 0 auto; /*show in center*/
 }
 
+.logon{
+	width: 30%;
+	margin: 0 auto; /*show in center*/
+}
 

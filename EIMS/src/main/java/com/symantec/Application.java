@@ -10,7 +10,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import com.symantec.bean.Admin;
 import com.symantec.bean.Employee;
+import com.symantec.service.AdminService;
 import com.symantec.service.EmployeeService;
 
 @Configuration
@@ -20,6 +22,9 @@ public class Application implements CommandLineRunner{
 
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private AdminService adminService;
 	
     public static void main(String[] args) {
     	ApplicationContext ctx = SpringApplication.run(Application.class, args);
@@ -41,6 +46,12 @@ public class Application implements CommandLineRunner{
 		if(null == e){
 			e = employeeService.add(new Employee("Joe", "Qiao", "AS", "Guangwei_Qiao@symantec.com"));
 			System.out.println("----------Add an employee to database : "+ e);
+		}
+		
+		Admin admin = adminService.findAdminByName("admin");
+		if(null == admin){
+			adminService.addAdmin(new Admin("admin","admin"));
+			System.out.println("----------Add an Admin to database : "+ admin);
 		}
 	}
 }

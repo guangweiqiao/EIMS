@@ -53,8 +53,9 @@ public class EmployeeController {
 		return employee;
 	}
 	
-	@RequestMapping(value="/updateEmployee", method = RequestMethod.PUT)
+	@RequestMapping(value="/employee/update", method = RequestMethod.PUT)
 	public Employee updateEmployee(@RequestBody Employee employee){
+		System.out.println(employee);
 		return employeeService.update(employee);
 	}
 	

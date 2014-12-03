@@ -10,8 +10,79 @@ employeeCtrls.controller('HelloCtrl', ['$scope',
     }
 ]);
 
-employeeCtrls.controller('EmployeeCtrls', ['$scope', '$http','$window', '$location', 'shareFactory','employeeFunc', 
-    function ($scope, $http, $window, $location, shareFactory,employeeFunc) {
+employeeCtrls.controller('LogonCtrl', ['$scope','$http','$location', function ($scope,$http,$location) {
+    $scope.user = {
+        name     : "admin",
+        password : ""
+    };
+
+    $scope.logon = function(){
+        $http.get('/admin/logon/' + $scope.user.name + "/" + $scope.user.password).success(function(data){
+            if(data){
+                $location.path("/list");
+            }else{
+                alert("Login Failed!");
+            }
+        });
+    };
+
+    $scope.reset = function(){
+        $scope.user = {
+            name     : "admin",
+            password : ""
+        };
+    };
+}])
+
+employeeCtrls.controller('listCtrl',['$scope', '$http','$window', '$location', 
+    '$log','shareFactory','employeeService', 
+    function ($scope, $http, $window, $location,$log,shareFactory,employeeService) {
+    
+    $scope.listEmployees = function(){
+        employeeService.listEmployees(function(data){$scope.employees = data;});
+    };
+
+    $scope.getEmployeeById = function(id){
+        employeeService.getEmployeeById(id, function(data){
+            shareFactory.setEmployee(data);
+            $location.path("/add");
+        });
+    };
+
+    $scope.forwardToAddPage = function(){
+        shareFactory.setUpdate(false);
+        $location.path("/add");
+    };
+
+    $scope.forwardToEditPage = function(id){
+        shareFactory.setUpdate(true);
+        $scope.getEmployeeById(id);
+    };
+
+    $scope.deleteEmployee = function(id){
+        employeeService.deleteEmployee(id, function(){
+            $scope.listEmployees();
+        });
+    };
+}]);
+
+employeeCtrls.controller('addAndUpdateCtrl', ['$scope', '$http','$window', '$location', 
+    '$log','shareFactory','employeeService', 
+    function ($scope, $http, $window, $location,$log,shareFactory,employeeService) {
+
+    var update = shareFactory.getUpdate();
+    if(update){
+        var data = shareFactory.getEmployee();
+        $scope.firstName = data.firstName;
+        $scope.lastName  = data.lastName;
+        $scope.department= data.department;
+        $scope.email     = data.email;
+    }else{
+        $scope.firstName = '';
+        $scope.lastName = '';
+        $scope.department= '';
+        $scope.email     = '';
+    }
 
     $scope.checkNullParam = function(){
         if(!($scope.firstName)){
@@ -37,20 +108,20 @@ employeeCtrls.controller('EmployeeCtrls', ['$scope', '$http','$window', '$locati
         return 1;
     };
 
-    $scope.listEmployees = function(){
-        $http.get('/employees/list').success(function(data) {
-            $scope.employees = data;
-        });
-    };
-
     $scope.addEmployee = function(){
-        //alert(fName + "  " + lName + "  "+ dpt+ "  " + em);
-        employeeFunc.addEmployee($scope.firstName, $scope.lastName, $scope.department, $scope.email, function(){$location.path("/list");});
+        employeeService.addEmployee($scope.firstName, $scope.lastName, $scope.department, $scope.email,
+         function(){
+            $location.path("/list");
+         });
     };
 
     $scope.editEmployee = function() {
-        alert("update an employee");
-        //todo...
+        var employee = shareFactory.getEmployee();
+        $log.log("update an employee with id:" + employee.id + " firstName:"+ $scope.firstName);
+        employeeService.editEmployee(employee.id, $scope.firstName, $scope.lastName, $scope.department, $scope.email,
+            function(){
+                $location.path("/list");
+            });
     };
 
     $scope.submit = function(){
@@ -66,34 +137,4 @@ employeeCtrls.controller('EmployeeCtrls', ['$scope', '$http','$window', '$locati
         }
     };
 
-    $scope.deleteEmployee = function(id){
-        $http.delete('/employee/delete/' + id).success(function(){
-            $scope.listEmployees();
-            //alert("delete employee:" + id);
-        });
-    };
-
-    $scope.getEmployeeById = function(id, callback){
-        $http.get('/employee/get/' + id).success(function(data){
-            $scope.employee = data;
-            callback($scope.employee);
-        });
-    };
-
-    $scope.forwardToAddPage = function(){
-        shareFactory.setUpdate(false);
-        $location.path("/add");
-    };
-
-    $scope.forwardToEditPage = function(id){
-        shareFactory.setUpdate(true);
-        $scope.getEmployeeById(id, function(){
-            //alert($scope.employee);
-            $scope.update = shareFactory.getUpdate();
-            $location.path("/add");
-        });
-    };
-
 }]);
-
-
