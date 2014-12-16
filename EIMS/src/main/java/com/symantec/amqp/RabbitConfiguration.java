@@ -3,6 +3,7 @@ package com.symantec.amqp;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
@@ -26,6 +27,11 @@ public class RabbitConfiguration {
 	public static final int CHANNELCACHESIZE = 25; //default value is 1;
 	public static final String USERNAME      = "guest";
 	public static final String PASSWORD      = "guest";
+	
+	//for forward
+	public static final String FORWARDEXCHANGE   = "forwardExchange";
+	public static final String FORWARDQUEUE      = "forwardQueue";
+	public static final String FORWARDROUTINGKEY = "forwarKey";
 	
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -85,7 +91,7 @@ public class RabbitConfiguration {
 		return template;
     }
     
-    @Bean
+    @Bean(name=QUEUENAME)
     public Queue messageQueue() {
        return new Queue(QUEUENAME);
     }
@@ -93,7 +99,7 @@ public class RabbitConfiguration {
     /**
      * This bean is optional,if no exchange is defined, we will rely on the default exchange.
      */
-    @Bean
+    @Bean(name=EXCHANGNAME)
     public TopicExchange exchange(){
     	return new TopicExchange(EXCHANGNAME);
     }
@@ -102,17 +108,40 @@ public class RabbitConfiguration {
      *This bean is optional,if no bing is defined, we will relying on the default binding 
      *to the default change,and the default binding of all queues to the default exchange by their name. 
      */
-    @Bean
+    @Bean(name="leavebinding")
     public Binding binding(){
     	return BindingBuilder.bind(
     			messageQueue()).to(exchange()).with(ROUTEKEY);
+    }
+    
+    @Bean(name=FORWARDQUEUE)
+    public Queue forwardQueue(){
+    	return new Queue(FORWARDQUEUE);
+    }
+    
+    @Bean(name=FORWARDEXCHANGE)
+    public DirectExchange forwardExchange(){
+    	return new DirectExchange(FORWARDEXCHANGE);
+    }
+    
+    
+    @Bean(name="forwardbinding")
+    public Binding forwarBinding(){
+    	return BindingBuilder.bind(
+    			forwardQueue()).to(forwardExchange()).with(FORWARDROUTINGKEY);
     }
     
     @Bean
     public AmqpAdmin amqpAdmin() {
     	RabbitAdmin admin = new RabbitAdmin(connectionFactory());
     	admin.declareExchange(exchange());
-    	admin.declareBinding(binding());
+    	admin.declareQueue(messageQueue());
+    	admin.declareBinding(binding()); //before declare binding, should declare exchange and queue first.
+    	
+    	admin.declareExchange(forwardExchange());
+    	admin.declareQueue(forwardQueue());
+    	admin.declareBinding(forwarBinding());
         return admin;
     }
+    
 }

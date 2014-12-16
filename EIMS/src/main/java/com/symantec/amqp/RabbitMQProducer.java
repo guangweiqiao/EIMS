@@ -24,7 +24,7 @@ public class RabbitMQProducer {
 	
 	public void sendAUnroutableMessage(){
 		Message message = MessageBuilder.withBody("Test Message- unroutable".getBytes()).build();
-		template.send(RabbitConfiguration.EXCHANGNAME, "non-exist-route-key", message, new CorrelationData("msg1"));
+		template.send(RabbitConfiguration.EXCHANGNAME, "non-exist-route-key", message, new CorrelationData("msg-unroutable"));
 	}
 	
 	public void closeContext(){
