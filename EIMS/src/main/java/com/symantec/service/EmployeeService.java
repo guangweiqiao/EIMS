@@ -65,4 +65,8 @@ public class EmployeeService {
 	public Employee getEmployeeById(String id) {
 		return repo.findOne(id);
 	}
+
+	public void setRepo(EmployeeRepository repo) {
+		this.repo = repo;
+	}
 }
