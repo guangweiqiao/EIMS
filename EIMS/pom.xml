@@ -5,8 +5,8 @@
 
 	<groupId>com.symantec</groupId>
 	<artifactId>EIMS</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>1.0</version>
+	<packaging>war</packaging>
 
 	<name>EIMS</name>
 	<description>Demo project for Spring Boot</description>
@@ -28,8 +28,18 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-tomcat</artifactId>
+        	<scope>provided</scope>
+        </dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -50,16 +60,19 @@
 			<artifactId>jmockit</artifactId>
 			<version>1.13</version>
 		</dependency>
+		
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-amqp</artifactId>
+			<groupId>com.cj.jshintmojo</groupId>
+			<artifactId>jshint-maven-plugin</artifactId>
+			<version>1.6-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>com.symantec.Application</start-class>
-		<java.version>1.8</java.version>
+		<java.version>1.7</java.version>
 	</properties>
 
 	<build>
@@ -67,6 +80,34 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+			     <groupId>com.cj.jshintmojo</groupId>
+			     <artifactId>jshint-maven-plugin</artifactId>
+			     <version>1.6-SNAPSHOT</version>
+			     <executions>
+			         <execution>
+			             <goals>
+			                 <goal>lint</goal>
+			             </goals>
+			         </execution>
+			     </executions>
+			     <configuration>
+			         <version>2.5.6</version>
+			         <options>maxparams:3,indent,camelcase,eqeqeq,forin,immed,latedef,noarg,noempty,nonew</options>
+			         <globals>require,$,yourFunkyJavascriptModule</globals>
+			         <configFile>src/main/resources/jshint.conf.js</configFile>
+			         <directories>
+			             <directory>static/js</directory>
+			         </directories>
+			         <excludes>
+			              <exclude>static/js/lib</exclude>
+        		 	 </excludes>
+			         <reporter>jslint</reporter>
+			         <reportFile>target/jshint.xml</reportFile>
+			         <failOnError>false</failOnError>
+			     </configuration>
 			</plugin>
 		</plugins>
 	</build>

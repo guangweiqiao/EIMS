@@ -13,6 +13,7 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate.ConfirmCallback;
 import org.springframework.amqp.rabbit.core.RabbitTemplate.ReturnCallback;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,11 +81,11 @@ public class RabbitConfiguration {
 		
 		//Only one ConfirmCallback is supported by a RabbitTemplate
 		template.setConfirmCallback(new ConfirmCallback(){
-
 			@Override
 			public void confirm(CorrelationData correlationData, boolean ack) {
 				System.out.println("-----------Confirm-----------"  + correlationData);
 			}
+
 			
 		});
 		
@@ -144,4 +145,13 @@ public class RabbitConfiguration {
         return admin;
     }
     
+    @Bean
+    public Receiver receiver(){
+    	return new Receiver();
+    }
+    
+    @Bean
+    public MessageListenerAdapter listernerAdapter() {
+        return new MessageListenerAdapter(receiver());
+    }
 }
