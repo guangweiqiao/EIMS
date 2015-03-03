@@ -1,6 +1,8 @@
+/*jshint strict:false */
+
 var employeeServices = angular.module('employeeServices', []);
 
-employeeServices.service('employeeService', ['$scope',function($scope) {
+employeeServices.service('employeeService', ['$scope',function() {
 
 }]);
 
@@ -59,5 +61,5 @@ employeeServices.service('employeeService', ['$http',function ($http) {
 		$http.get('/employee/get/' + id).success(callback);
 	};
 
-}])
+}]);
 

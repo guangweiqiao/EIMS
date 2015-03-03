@@ -1,4 +1,4 @@
-'use strict';
+/*jshint strict:false */
 
 var employeeCtrls = angular.module('employeeCtrls', ['employeeServices']);
 
@@ -32,7 +32,7 @@ employeeCtrls.controller('LogonCtrl', ['$scope','$http','$location', function ($
             password : ""
         };
     };
-}])
+}]);
 
 employeeCtrls.controller('listCtrl',['$scope', '$http','$window', '$location', 
     '$log','shareFactory','employeeService', 

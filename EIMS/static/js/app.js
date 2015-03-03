@@ -1,3 +1,5 @@
+/*jshint strict:false */
+
 var employeeApp = angular.module('employeeApp', [
     'ngRoute', 'ngAnimate', 'employeeCtrls','employeeFilters', 'employeeDirectives'
 ]);
@@ -17,5 +19,5 @@ employeeApp.config(function($routeProvider) {
         controller: 'LogonCtrl'
     }).otherwise({
         redirectTo: '/logon'
-    })
+    });
 });
