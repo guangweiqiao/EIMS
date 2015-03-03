@@ -26,6 +26,7 @@ employeeServices.service('shareFactory', [function() {
 	this.setEmployee = function(employee){
 		this.employee = employee;
 	};
+	
 }]);
 
 employeeServices.service('employeeService', ['$http',function ($http) {
