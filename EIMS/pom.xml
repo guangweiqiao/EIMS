@@ -72,7 +72,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>com.symantec.Application</start-class>
-		<java.version>1.7</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<build>
@@ -95,8 +95,8 @@
 			     </executions>
 			     <configuration>
 			         <version>2.5.6</version>
-			         <options>maxparams:3,indent,camelcase,eqeqeq,forin,immed,latedef,noarg,noempty,nonew</options>
-			         <globals>require,$,yourFunkyJavascriptModule</globals>
+			         <options>maxparams:5,indent,camelcase,eqeqeq,forin,immed,latedef,noarg,noempty,nonew</options>
+			         <globals>$,angular</globals>
 			         <configFile>src/main/resources/jshint.conf.js</configFile>
 			         <directories>
 			             <directory>static/js</directory>
@@ -104,8 +104,8 @@
 			         <excludes>
 			              <exclude>static/js/lib</exclude>
         		 	 </excludes>
-			         <reporter>jslint</reporter>
-			         <reportFile>target/jshint.xml</reportFile>
+			         <reporter>html</reporter>
+			         <reportFile>target/jshint.html</reportFile>
 			         <failOnError>false</failOnError>
 			     </configuration>
 			</plugin>
