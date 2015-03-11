@@ -1,4 +1,5 @@
-/*jshint strict:false */
+/*jshint strict:false, undef: true, unused: true */
+/* global angular */
 
 var employeeApp = angular.module('employeeApp', [
     'ngRoute', 'ngAnimate', 'employeeCtrls','employeeFilters', 'employeeDirectives'
