@@ -95,7 +95,7 @@
 			     </executions>
 			     <configuration>
 			         <version>2.5.6</version>
-			         <options>maxparams:5,indent,camelcase,eqeqeq,forin,immed,latedef,noarg,noempty,nonew</options>
+			         <options></options>
 			         <globals>$,angular</globals>
 			         <configFile>src/main/resources/jshint.conf.js</configFile>
 			         <directories>
@@ -104,8 +104,8 @@
 			         <excludes>
 			              <exclude>static/js/lib</exclude>
         		 	 </excludes>
-			         <reporter>html</reporter>
-			         <reportFile>target/jshint.html</reportFile>
+			         <reporter>checkstyle</reporter>
+			         <reportFile>target/checkstyle-jshint.xml</reportFile>
 			         <failOnError>false</failOnError>
 			     </configuration>
 			</plugin>
